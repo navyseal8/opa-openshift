@@ -1,8 +1,8 @@
 # OPA gatekeeper installation and Rego rules demo
 
-# Modify Security Context Constraint (SCC)
+## Modify Security Context Constraint (SCC)
 - From K8S v1.21 onwards, PSP is deprecated. OpenShift retain the use of SCC, which is similar to PSP but more feature rich. 
-- The default gatekeeper installation yaml was not suitable to be deploy on a OpenShift cluster (and it's managed cluster like ROSA/ARO)
+- The default gatekeeper [installation](https://github.com/openshift/gatekeeper) yaml was not suitable to be deploy on a OpenShift cluster (and it's managed cluster like ROSA/ARO)
 
 
 ## SCC for gatekeeper-admin
@@ -99,7 +99,7 @@ validatingwebhookconfiguration.admissionregistration.k8s.io/gatekeeper-validatin
 Verify all deployment are successful
 
 ```
-oc get all -n gatekeeper-system
+$ oc get all -n gatekeeper-system
 NAME                                                 READY   STATUS    RESTARTS   AGE
 pod/gatekeeper-audit-54fdfd965-nhm5x                 1/1     Running   0          32s
 pod/gatekeeper-controller-manager-798fb78f97-gd2rf   1/1     Running   0          32s
@@ -135,7 +135,10 @@ Create your rule
 ```
 $ oc apply -f rule1.yaml 
 cat rk8srequiredlabels.constraints.gatekeeper.sh/ns-must-have-gk created
+```
 
+Test your rego rules
+```
 $ oc new-project test
 Error from server (Forbidden): admission webhook "validation.gatekeeper.sh" denied the request: [ns-must-have-gk] you must provide labels: {"gatekeeper"}
 
